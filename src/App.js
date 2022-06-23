@@ -11,8 +11,8 @@ function App() {
   const [weather, setWeather] = useState({});
   const [locGeo, setLocGeo] = useState({});
   const [isPending, setIsPending] = useState(true);
-  let locLat = 36.7753606;
-  let locLon = 3.0601882;
+  //let locLat = 36.7753606;
+  //let locLon = 3.0601882;
 
   const search = (evt) => {
     if (evt.key === "Enter") {
@@ -29,10 +29,8 @@ function App() {
   };
   console.log(locGeo.lat, locGeo.lon);
   useEffect(() => {
-    locLat = locGeo.lat;
-    locLon = locGeo.lon;
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${locLat}&lon=${locLon}&units${api.units}&appid=${api.key}`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${locGeo.lat}&lon=${locGeo.lon}&appid=${api.key}`
     )
       .then((resp) => resp.json())
       .then((data) => {
@@ -41,9 +39,6 @@ function App() {
       });
     console.log("hiiiii");
   }, [locGeo.lat, locGeo.lon]);
-  /*useEffect(() => {
-    
-  }, [locGeo.lat, locGeo.lon]);*/
 
   const dateBuilder = (d) => {
     let months = [
@@ -99,6 +94,7 @@ function App() {
             onKeyDown={search}
           />
         </div>
+        {isPending && <div className="pending">loading...</div>}
         {typeof weather.name != "undefined" ? (
           <div>
             <div className="location-box">
